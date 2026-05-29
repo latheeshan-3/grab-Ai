@@ -3,25 +3,34 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
     container_name: booking-api
+
     ports:
       - "8000:8000"
+
     env_file:
       - .env
+
     volumes:
       - ./gen-lang-client-0999860460-7080d7606a84.json:/secrets/gen-lang-client-0999860460-7080d7606a84.json:ro
-      - .:/app
-      - /app/.venv
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /secrets/gen-lang-client-0999860460-7080d7606a84.json
+
+    depends_on:
+      - redis
 
   redis:
     image: redis:7-alpine
     container_name: booking-api-redis
     restart: always
+
     ports:
       - "6379:6379"
+
     volumes:
       - redis_data:/data
 

@@ -1,9 +1,13 @@
 import uuid
+import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException
 
 from schemas import ChatRequest, ChatResponse
+from agents.router_agent import route_request
+
+logger = logging.getLogger("booking_api.chat")
 
 router = APIRouter(tags=["Chat"])
 
@@ -20,32 +24,43 @@ async def chat(request: ChatRequest):
     - The tenant_id scopes the conversation to a specific medical center.
     """
 
-    # Validate tenant_id
+    # ── Validate inputs ───────────────────────────────────────────────────────
     tenant_id = request.tenant_id.strip()
     if not tenant_id:
         raise HTTPException(status_code=400, detail="tenant_id cannot be empty")
 
-    # Generate conversation_id if not provided (new session)
     conversation_id = request.conversation_id or str(uuid.uuid4())
 
     user_message = request.message.strip()
     if not user_message:
         raise HTTPException(status_code=400, detail="message cannot be empty")
 
-    # ---------------------------------------------------------------
-    # STUB: Replace this with actual RAG + Agentic booking logic
-    # The real implementation will:
-    #   1. Load tenant-specific RAG context from Supabase
-    #   2. Feed conversation history + user message to the AI agent
-    #   3. Execute booking actions if the agent decides to
-    #   4. Return the agent's response
-    # ---------------------------------------------------------------
-
-    reply = (
-        f"Hello! I'm your medical booking assistant. "
-        f"How can I help you today? "
-        f"You can ask me about available appointments, doctors, or services."
+    logger.info(
+        f"[Chat] Incoming request | tenant={tenant_id} | "
+        f"conv={conversation_id} | message='{user_message[:80]}'"
     )
+
+    # ── Step 1: Route the request via RouterAgent ─────────────────────────────
+    # RouterAgent calls the LLM and returns "rag_service" or "booking_service"
+    target_service = route_request(
+        tenant_id=tenant_id,
+        conversation_id=conversation_id,
+        user_message=user_message,
+    )
+
+    # ── Step 2: Dispatch to the correct service (stubs for now) ───────────────
+    if target_service == "booking_service":
+        # TODO: call booking_service / main booking agent
+        reply = (
+            "I can help you with your appointment. "
+            "(Booking service — coming soon.)"
+        )
+    else:
+        # TODO: call rag_service
+        reply = (
+            "I can answer your questions about our services and doctors. "
+            "(RAG service — coming soon.)"
+        )
 
     timestamp = datetime.now(timezone.utc).isoformat()
 
