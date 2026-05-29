@@ -3,6 +3,24 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Chat theme tokens */
+  --chat-bg: #0a0f1a;
+  --chat-surface: #111827;
+  --chat-surface-hover: #1a2332;
+  --chat-border: rgba(255, 255, 255, 0.06);
+  --chat-accent: #6366f1;
+  --chat-accent-light: #818cf8;
+  --chat-accent-glow: rgba(99, 102, 241, 0.15);
+  --chat-user-bubble: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --chat-bot-bubble: #1e293b;
+  --chat-text-primary: #f1f5f9;
+  --chat-text-secondary: #94a3b8;
+  --chat-text-muted: #64748b;
+  --chat-input-bg: #1e293b;
+  --chat-input-border: rgba(255, 255, 255, 0.08);
+  --chat-input-focus: rgba(99, 102, 241, 0.4);
+  --chat-success: #22c55e;
 }
 
 @theme inline {
@@ -23,4 +41,119 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ============================================================
+   Chat Animations
+   ============================================================ */
+
+/* Message fade-in + slide-up */
+@keyframes chatFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-message-enter {
+  animation: chatFadeIn 0.3s ease-out forwards;
+}
+
+/* Typing indicator bounce */
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.typing-dot {
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Pulse glow for the header status dot */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+}
+
+.status-pulse {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Send button press */
+@keyframes sendPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.send-press {
+  animation: sendPress 0.2s ease-out;
+}
+
+/* ============================================================
+   Custom Scrollbar for Chat
+   ============================================================ */
+
+.chat-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox */
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* ============================================================
+   Gradient shimmer for welcome message
+   ============================================================ */
+
+@keyframes gradientShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa, #6366f1);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShimmer 4s ease infinite;
 }
