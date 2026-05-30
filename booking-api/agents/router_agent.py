@@ -60,7 +60,7 @@ def route_request(
         prompt=prompt,
         system_instruction=ROUTER_SYSTEM_PROMPT,
         temperature=0.0,          # deterministic — routing must be consistent
-        max_output_tokens=128,     # we only need a tiny JSON object
+        max_output_tokens=128,     #  only need a tiny JSON object
     )
 
     logger.debug(f"[RouterAgent] Raw LLM response: {raw_response!r}")

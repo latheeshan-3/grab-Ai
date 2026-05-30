@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException
 
 from schemas import ChatRequest, ChatResponse
 from agents.router_agent import route_request
+from agents.booking_service_agent import handle_booking_request
 
 logger = logging.getLogger("booking_api.chat")
 
@@ -40,20 +41,19 @@ async def chat(request: ChatRequest):
         f"conv={conversation_id} | message='{user_message[:80]}'"
     )
 
-    # ── Step 1: Route the request via RouterAgent ─────────────────────────────
-    # RouterAgent calls the LLM and returns "rag_service" or "booking_service"
+    # ── Step 1: Route via RouterAgent ─────────────────────────────────────────
     target_service = route_request(
         tenant_id=tenant_id,
         conversation_id=conversation_id,
         user_message=user_message,
     )
 
-    # ── Step 2: Dispatch to the correct service (stubs for now) ───────────────
+    # ── Step 2: Dispatch to the identified service ────────────────────────────
     if target_service == "booking_service":
-        # TODO: call booking_service / main booking agent
-        reply = (
-            "I can help you with your appointment. "
-            "(Booking service — coming soon.)"
+        reply = await handle_booking_request(
+            tenant_id=tenant_id,
+            conversation_id=conversation_id,
+            user_message=user_message,
         )
     else:
         # TODO: call rag_service

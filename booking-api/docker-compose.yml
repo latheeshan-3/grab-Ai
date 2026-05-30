@@ -19,7 +19,7 @@ services:
 
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /secrets/gen-lang-client-0999860460-7080d7606a84.json
-
+      REDIS_URL: redis://redis:6379
     depends_on:
       - redis
 
