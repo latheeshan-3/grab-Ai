@@ -21,3 +21,6 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 supabase_admin: Client = None
 if SUPABASE_SERVICE_KEY:
     supabase_admin = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+
+def get_supabase_client() -> Client:
+    return supabase

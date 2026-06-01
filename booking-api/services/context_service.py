@@ -71,7 +71,6 @@ def _blank_workflow(workflow_id: str) -> dict:
         "service": {
             "id":          None,
             "name":        None,
-            "doctor_id":   None,
             "doctor_name": None,
         },
         "slot": {

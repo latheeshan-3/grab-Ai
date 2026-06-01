@@ -42,7 +42,7 @@ async def chat(request: ChatRequest):
     )
 
     # ── Step 1: Route via RouterAgent ─────────────────────────────────────────
-    target_service = route_request(
+    target_service = await route_request(
         tenant_id=tenant_id,
         conversation_id=conversation_id,
         user_message=user_message,
