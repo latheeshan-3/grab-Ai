@@ -41,6 +41,10 @@ from sub_agents.slot_lookup_agent.slot_lookup_agent import (
     run as run_slot_lookup,
 )
 
+from sub_agents.details_collection_agent.details_collection_agent import (
+    run as run_details_collection,
+)
+
 logger = logging.getLogger("booking_api.booking_service_agent")
 
 # ── Valid sub-agents ────────────────────────────────────────────────────────────
@@ -276,7 +280,13 @@ async def _dispatch_sub_agent(
 
     if sub_agent == "slots_lookup_agent":
         return await run_slot_lookup(context)
+    
+    if sub_agent == "details_collection_agent":
+        # TODO: from sub_agents.details_collection_agent import run
+        # return await run(context)
+        return await run_details_collection(context)
 
+    
     if sub_agent == "details_collection_agent":
         # TODO: from sub_agents.details_collection_agent import run
         # return await run(context)
