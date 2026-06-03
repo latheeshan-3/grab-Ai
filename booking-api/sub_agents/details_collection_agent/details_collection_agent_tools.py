@@ -150,27 +150,25 @@ def format_booking_summary(
     before calling confirm_commit_agent.
 
     Example output:
-        📋 Booking Summary
-        ─────────────────────────────
+        📋 *Booking Summary*
         Service  : Dermatology
         Doctor   : Dr. Perera
         Date     : 2026-06-10
         Time     : 09:30
         Patient  : John Perera
         WhatsApp : +94771234567
-        ─────────────────────────────
-        Please confirm to complete the booking.
+        Shall I confirm this booking? (Reply *yes* to confirm or *no* to cancel)
     """
+    
+    
     doctor_line = f"Doctor   : {doctor_name}" if doctor_name else "Doctor   : (not specified)"
     return (
         f"📋 *Booking Summary*\n"
-        f"─────────────────────────────\n"
         f"Service  : {service_name}\n"
         f"{doctor_line}\n"
         f"Date     : {slot_date}\n"
         f"Time     : {slot_time}\n"
         f"Patient  : {patient_name}\n"
         f"WhatsApp : {whatsapp}\n"
-        f"─────────────────────────────\n"
         f"Shall I confirm this booking? (Reply *yes* to confirm or *no* to cancel)"
     )
