@@ -45,6 +45,10 @@ from sub_agents.details_collection_agent.details_collection_agent import (
     run as run_details_collection,
 )
 
+from sub_agents.confirm_commit_agent.confirm_commit_agent import (
+    run as run_confirm_commit,
+)
+
 logger = logging.getLogger("booking_api.booking_service_agent")
 
 # ── Valid sub-agents ────────────────────────────────────────────────────────────
@@ -306,10 +310,7 @@ async def _dispatch_sub_agent(
         return reply, context
 
     if sub_agent == "confirm_commit_agent":
-        # TODO: from sub_agents.confirm_commit_agent import run
-        # return await run(context)
-        reply = "Your booking has been confirmed! You will receive a WhatsApp notification shortly."
-        return reply, context
+        return await run_confirm_commit(context)
 
     # Fallback — should never reach here due to validation above
     logger.error(f"[BookingAgent] No dispatch handler for '{sub_agent}'")
